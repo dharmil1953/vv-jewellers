@@ -4,6 +4,7 @@ import Image from "next/image";
 import logoImage from "@/public/assets/logo.png";
 import html2canvas from "html2canvas";
 import backgroundImg from "@/public/assets/bg-image.jpg";
+import domtoimage from "dom-to-image";
 
 type RateKeys = "k24" | "k22" | "k18";
 
@@ -38,24 +39,45 @@ export default function GoldRateDisplay({
   const k22WithGST = addGST(rates.k22);
   const k18WithGST = addGST(rates.k18);
 
+  //   const handleDownload = async () => {
+  //     if (!cardRef.current) return;
+
+  //     try {
+  //       const canvas = await html2canvas(cardRef.current, {
+  //         scale: 2,
+  //         backgroundColor: "#000000",
+  //         useCORS: true,
+  //         logging: false,
+  //       });
+
+  //       const link = document.createElement("a");
+  //       link.download = `VV-Gold-Rate-${dateInfo.date.replace(/\//g, "-")}.png`;
+  //       link.href = canvas.toDataURL("image/png");
+  //       link.click();
+  //     } catch (err) {
+  //       console.error("Download error:", err);
+  //       alert("Failed to generate image.");
+  //     }
+  //   };
+
   const handleDownload = async () => {
     if (!cardRef.current) return;
 
     try {
-      const canvas = await html2canvas(cardRef.current, {
-        scale: 2,
-        backgroundColor: "#000000",
-        useCORS: true,
-        logging: false,
+      const dataUrl = await domtoimage.toPng(cardRef.current, {
+        quality: 1,
+        bgcolor: "#000000",
+        width: cardRef.current.scrollWidth * 2,
+        height: cardRef.current.scrollHeight * 2,
+        style: { transform: "scale(2)", transformOrigin: "top left" },
       });
 
       const link = document.createElement("a");
       link.download = `VV-Gold-Rate-${dateInfo.date.replace(/\//g, "-")}.png`;
-      link.href = canvas.toDataURL("image/png");
+      link.href = dataUrl;
       link.click();
     } catch (err) {
-      console.error("Download error:", err);
-      alert("Failed to generate image.");
+      console.error(err);
     }
   };
 
@@ -83,11 +105,11 @@ export default function GoldRateDisplay({
                 {dateInfo.date}
               </span>
               <div className="w-16 h-16 relative">
-                <Image
-                  src={logoImage}
+                <img
+                  src={logoImage.src}
                   alt="VV Jewels Logo"
-                  fill
-                  className="object-contain"
+                  className="w-full h-full object-contain"
+                  crossOrigin="anonymous"
                 />
               </div>
               <span style={{ color: "#fde68a", fontSize: "0.75rem" }}>
@@ -101,14 +123,23 @@ export default function GoldRateDisplay({
             </h2>
 
             <div className="mt-3">
-              <div style={{ color: "#f59e0b", fontSize: "2.25rem", fontWeight: "bold" }}>
+              <div
+                style={{
+                  color: "#f59e0b",
+                  fontSize: "2.25rem",
+                  fontWeight: "bold",
+                }}
+              >
                 24k GOLD
               </div>
               <div className="text-4xl sm:text-5xl font-bold text-white">
                 {rates.k24.toLocaleString("en-IN")}
                 <span className="text-2xl">/-</span>
               </div>
-              <div style={{ color: "#9ca3af", fontSize: "0.75rem" }} className="mt-1">
+              <div
+                style={{ color: "#9ca3af", fontSize: "0.75rem" }}
+                className="mt-1"
+              >
                 (+3% GST) Per 10grams
               </div>
             </div>
@@ -125,7 +156,10 @@ export default function GoldRateDisplay({
                   }}
                 ></div>
 
-                <div style={{ color: "#f59e0b", fontSize: "0.875rem" }} className="px-2">
+                <div
+                  style={{ color: "#f59e0b", fontSize: "0.875rem" }}
+                  className="px-2"
+                >
                   ● ● ●
                 </div>
                 <div
@@ -143,28 +177,46 @@ export default function GoldRateDisplay({
             <div className="grid grid-cols-2 gap-6 px-4">
               {/* 22K */}
               <div>
-                <div style={{ color: "#f59e0b", fontSize: "1.25rem", fontWeight: "600" }}>
+                <div
+                  style={{
+                    color: "#f59e0b",
+                    fontSize: "1.25rem",
+                    fontWeight: "600",
+                  }}
+                >
                   22k GOLD
                 </div>
                 <div className="text-2xl font-bold text-white">
                   {rates.k22.toLocaleString("en-IN")}
                   <span className="text-lg">/-</span>
                 </div>
-                <div style={{ color: "#9ca3af", fontSize: "0.75rem" }} className="mt-1">
+                <div
+                  style={{ color: "#9ca3af", fontSize: "0.75rem" }}
+                  className="mt-1"
+                >
                   +12.50% (Labour)
                 </div>
               </div>
 
               {/* 18K */}
               <div>
-                <div style={{ color: "#f59e0b", fontSize: "1.25rem", fontWeight: "600" }}>
+                <div
+                  style={{
+                    color: "#f59e0b",
+                    fontSize: "1.25rem",
+                    fontWeight: "600",
+                  }}
+                >
                   18k GOLD
                 </div>
                 <div className="text-2xl font-bold text-white">
                   {rates.k18.toLocaleString("en-IN")}
                   <span className="text-lg">/-</span>
                 </div>
-                <div style={{ color: "#9ca3af", fontSize: "0.75rem" }} className="mt-1">
+                <div
+                  style={{ color: "#9ca3af", fontSize: "0.75rem" }}
+                  className="mt-1"
+                >
                   +12.50% (Labour)
                 </div>
               </div>
@@ -173,8 +225,12 @@ export default function GoldRateDisplay({
             {/* Divider */}
             <div className="my-2">
               <div className="grid grid-cols-2 gap-8 px-4">
-                <div style={{ height: "1px", backgroundColor: "#4b5563" }}></div>
-                <div style={{ height: "1px", backgroundColor: "#4b5563" }}></div>
+                <div
+                  style={{ height: "1px", backgroundColor: "#4b5563" }}
+                ></div>
+                <div
+                  style={{ height: "1px", backgroundColor: "#4b5563" }}
+                ></div>
               </div>
             </div>
 
@@ -208,10 +264,23 @@ export default function GoldRateDisplay({
 
               {/* Center Text */}
               <div className="absolute left-1/2 -translate-x-1/2 text-center">
-                <div style={{ color: "#fde68a", fontSize: "0.625rem", lineHeight: "1.2" }}>
+                <div
+                  style={{
+                    color: "#fde68a",
+                    fontSize: "0.625rem",
+                    lineHeight: "1.2",
+                  }}
+                >
                   Gold rate <br /> with Labour
                 </div>
-                <div style={{ color: "#fde68a", fontSize: "0.625rem", lineHeight: "1.2", marginTop: "0.25rem" }}>
+                <div
+                  style={{
+                    color: "#fde68a",
+                    fontSize: "0.625rem",
+                    lineHeight: "1.2",
+                    marginTop: "0.25rem",
+                  }}
+                >
                   (+3% GST) <br /> Per 10grams
                 </div>
               </div>
@@ -220,15 +289,25 @@ export default function GoldRateDisplay({
             {/* Divider */}
             <div className="my-2">
               <div className="grid grid-cols-2 gap-8 px-4">
-                <div style={{ height: "1px", backgroundColor: "#4b5563" }}></div>
-                <div style={{ height: "1px", backgroundColor: "#4b5563" }}></div>
+                <div
+                  style={{ height: "1px", backgroundColor: "#4b5563" }}
+                ></div>
+                <div
+                  style={{ height: "1px", backgroundColor: "#4b5563" }}
+                ></div>
               </div>
             </div>
 
             {/* Final Rates */}
             <div className="grid grid-cols-2 gap-6 px-4 pb-2">
               <div>
-                <div style={{ color: "#fde68a", fontSize: "1.875rem", fontWeight: "bold" }}>
+                <div
+                  style={{
+                    color: "#fde68a",
+                    fontSize: "1.875rem",
+                    fontWeight: "bold",
+                  }}
+                >
                   {k22WithGST.toLocaleString("en-IN", {
                     maximumFractionDigits: 0,
                   })}
@@ -236,7 +315,13 @@ export default function GoldRateDisplay({
                 </div>
               </div>
               <div>
-                <div style={{ color: "#fde68a", fontSize: "1.875rem", fontWeight: "bold" }}>
+                <div
+                  style={{
+                    color: "#fde68a",
+                    fontSize: "1.875rem",
+                    fontWeight: "bold",
+                  }}
+                >
                   {k18WithGST.toLocaleString("en-IN", {
                     maximumFractionDigits: 0,
                   })}
@@ -256,7 +341,10 @@ export default function GoldRateDisplay({
                   }}
                 ></div>
 
-                <div style={{ color: "#f59e0b", fontSize: "0.875rem" }} className="px-2">
+                <div
+                  style={{ color: "#f59e0b", fontSize: "0.875rem" }}
+                  className="px-2"
+                >
                   ● ● ●
                 </div>
                 <div
@@ -275,7 +363,9 @@ export default function GoldRateDisplay({
               <div style={{ color: "white", fontSize: "0.75rem" }}>
                 02 Binori B square, 3, Sindhubhavan Road,
               </div>
-              <div style={{ color: "white", fontSize: "0.75rem" }}>Ahmedabad, Gujarat</div>
+              <div style={{ color: "white", fontSize: "0.75rem" }}>
+                Ahmedabad, Gujarat
+              </div>
 
               {/* Social Icons + Contact */}
               <div className="mt-3 flex justify-center items-center gap-6 text-xs">
