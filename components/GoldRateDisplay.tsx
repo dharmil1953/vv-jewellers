@@ -1,8 +1,6 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
-import Image from "next/image";
 import logoImage from "@/public/assets/logo.png";
-import html2canvas from "html2canvas";
 import backgroundImg from "@/public/assets/bg-image.jpg";
 import domtoimage from "dom-to-image";
 
