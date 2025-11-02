@@ -3,16 +3,22 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import logoImage from "@/public/assets/logo.png";
 
+type RateKeys = "k24" | "k22" | "k18";
+
+interface Rates {
+  k24: number;
+  k22: number;
+  k18: number;
+}
+
 export default function Home() {
-  // --- States ---
-  const [rates, setRates] = useState({
+  const [rates, setRates] = useState<Rates>({
     k24: 120800,
     k22: 111136,
     k18: 91808,
   });
   const [dateInfo, setDateInfo] = useState({ date: "", day: "" });
 
-  // --- Date & Day Auto Update ---
   useEffect(() => {
     const now = new Date();
     const formattedDate = now.toLocaleDateString("en-IN");
@@ -21,16 +27,16 @@ export default function Home() {
   }, []);
 
   // --- Handle Inline Edit ---
-  const handleEdit = (key, value) => {
-    if (!/^\d{1,6}$/.test(value)) return; // allow up to 6 digits
+  const handleEdit = (key: RateKeys, value: string) => {
+    if (!/^\d{1,6}$/.test(value)) return; 
     const num = Number(value);
     if (num <= 0) return;
     setRates((prev) => ({ ...prev, [key]: num }));
   };
 
   // --- Calculations ---
-  const addLabour = (base) => base * 1.125;
-  const addGST = (base) => addLabour(base) * 1.03;
+  const addLabour = (base: number) => base * 1.125;
+  const addGST = (base: number) => addLabour(base) * 1.03;
 
   const k22WithLab = addLabour(rates.k22);
   const k18WithLab = addLabour(rates.k18);
@@ -75,7 +81,6 @@ export default function Home() {
             TODAY'S GOLD RATE
           </h2>
 
-          {/* 24K Section */}
           <div className="mt-3">
             <div className="text-3xl sm:text-4xl font-bold text-amber-400">
               24k GOLD
@@ -85,7 +90,7 @@ export default function Home() {
                 type="text"
                 value={rates.k24}
                 onChange={(e) => handleEdit("k24", e.target.value)}
-                className="bg-transparent text-center outline-none w-32"
+                className="bg-transparent text-center outline-none w-44"
               />
               <span className="text-2xl">/-</span>
             </div>
