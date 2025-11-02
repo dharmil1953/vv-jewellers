@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 import ScreenWrapper from "./ScreenWrapper";
 
 export default function LoginScreen({ onSuccess }: { onSuccess: () => void }) {
-  const [id, setId] = useState("vvadmin");
-  const [password, setPassword] = useState("gold123");
+  const [id, setId] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
   useEffect(() => {
