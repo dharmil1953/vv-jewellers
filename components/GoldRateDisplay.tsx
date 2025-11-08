@@ -88,7 +88,7 @@ export default function GoldRateDisplay({
         >
           {/* Background Overlay */}
           <div
-            className="absolute inset-0 opacity-20"
+            className="absolute inset-0 opacity-50"
             style={{
               backgroundImage: `url(${backgroundImg.src})`,
               backgroundSize: "cover",
@@ -158,7 +158,7 @@ export default function GoldRateDisplay({
                   style={{ color: "#f59e0b", fontSize: "0.875rem" }}
                   className="px-2"
                 >
-                  ● ● ●
+                  ● ●
                 </div>
                 <div
                   style={{
@@ -343,7 +343,7 @@ export default function GoldRateDisplay({
                   style={{ color: "#f59e0b", fontSize: "0.875rem" }}
                   className="px-2"
                 >
-                  ● ● ●
+                  ● ●
                 </div>
                 <div
                   style={{
@@ -419,6 +419,7 @@ export default function GoldRateDisplay({
         >
           Previous
         </button>
+
 
         <button
           onClick={handleDownload}

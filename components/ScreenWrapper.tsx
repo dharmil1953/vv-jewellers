@@ -11,7 +11,7 @@ export default function ScreenWrapper({
     <div className="relative rounded-xl overflow-hidden shadow-lg w-full">
       {/* Background */}
       <div
-        className="absolute inset-0 opacity-20"
+        className="absolute inset-0 opacity-50"
         style={{
           backgroundImage:
             "url('https://images.unsplash.com/photo-1599992836360-f88e279f8350?ixlib=rb-4.1.0&fm=jpg&q=60&w=3000')",
